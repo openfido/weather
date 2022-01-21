@@ -511,7 +511,8 @@ def writeglm(data, glm=None, name=None, csv=None):
     weather.to_csv(csv,header=False,float_format=float_format,date_format="%s")
     return dict(glm=glm,csv=csv,name=name)
 
-def main(inputs,output,options={}):
+def main(inputs,outputs,options={}):
+    
     for name, value in options.items():
         setattr(name,value)
 
