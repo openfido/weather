@@ -1,3 +1,4 @@
+#!/bin/python3
 import os, sys, shutil
 
 OPENFIDO_OUTPUT = os.getenv("OPENFIDO_OUTPUT")
