@@ -44,16 +44,9 @@ try:
             elif len(line) > 2:
                 globals()[line[0]] = line[1:]
 except Exception as err:
-    print("ERROR: {err}, template written to output",file=sys.stderr)
-    with open(f"{OPENFIDO_OUTPUT}/config.csv","w") as f:
-        printf("CSVFILE,weatherfile.csv",file=f)
-        printf("GLMFILE,weatherfile.glm",file=f)
-        printf("NAME,glmobjectname",file=f)
-        printf("EMAIL,your.email@your.org",file=f)
-        printf("APIKEY,your-api-key",file=f)
-        printf("YEARS,year1,year2",...,file=f)
-        printf("LATLON,latitude,longitude",file=f)
-        exit(1)
+    print("ERROR: {err}, see output for an example config.csv",file=sys.stderr)
+    shutil.copyfile("example/config.csv",f"{OPENFIDO_OUTPUT}/config.csv")
+    exit(1)
 
 os.chdir("/tmp")
 
