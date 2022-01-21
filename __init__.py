@@ -519,6 +519,12 @@ name = None
 
 def main(inputs,outputs,options={}):
     
+    global position
+    global year
+    global name
+    global glm
+    global csv
+    
     if type(options) is list:
         for option in options:
             if option[0] == "-":
