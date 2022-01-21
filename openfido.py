@@ -56,7 +56,7 @@ try:
 
 except Exception as err:
 
-    print(f"ERROR: {err}\n\nHelp on {__doc__}")
+    print(f"\n*** ERROR ***\n{err}\n\nHelp on {__doc__}")
     raise
 
 os.chdir("/tmp")
