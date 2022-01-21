@@ -44,7 +44,7 @@ try:
             elif len(line) > 2:
                 globals()[line[0]] = line[1:]
 except Exception as err:
-    print(f"ERROR: {err}, example/config.csv for a template",file=sys.stderr)
+    print(f"ERROR: {err}, see https://github.com/openfido/weather/example/config.csv for a template",file=sys.stderr)
     exit(1)
 
 os.chdir("/tmp")
