@@ -512,12 +512,11 @@ def writeglm(data, glm=None, name=None, csv=None):
     return dict(glm=glm,csv=csv,name=name)
 
 def main(inputs,output,options={}):
+    for name, value in options.items():
+        setattr(name,value)
 
-	for name, value in options.items():
-		setattr(name,value)
-
-	if not name:
-		raise Exception("name not specified")
+    if not name:
+        raise Exception("name not specified")
 
     if position and year:
 
