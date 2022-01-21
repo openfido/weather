@@ -511,22 +511,26 @@ def writeglm(data, glm=None, name=None, csv=None):
     weather.to_csv(csv,header=False,float_format=float_format,date_format="%s")
     return dict(glm=glm,csv=csv,name=name)
 
+year = None
+position = None
+glm = None
+csv = None
+name = None
+
 def main(inputs,outputs,options={}):
     
-    position = None
-    year = None
-    name = None
-
     if type(options) is list:
         for option in options:
             if "=" in option:
                 spec = option.split("=")
-                locals()[spec[0]] = "=".join(spec[1:])
+                globals()[spec[0]] = "=".join(spec[1:])
             else:
                 raise Exception(f"{options} is invalid ")
     else:
         for name, value in options.items():
-            locals()[name] = value
+            globals()[name] = value
+
+    print(dir(locals()))
 
     if not name:
         raise Exception("name not specified")
@@ -545,11 +549,12 @@ def main(inputs,outputs,options={}):
             raise
 
 if __name__ == "__main__":
-    year = None
-    position = None
-    glm = None
-    name = None
-    csv = None
+
+    # year = "2020"
+    # position = "37.5,-122.2"
+    # glm = "/tmp/weather.glm"
+    # name = "test"
+    # csv = "/tmp/weather.csv"
 
     if len(sys.argv) == 1:
         syntax(1)
@@ -638,4 +643,4 @@ if __name__ == "__main__":
         else:
             error(f"option '{token}' is not valid",1)
     
-    main(None,[csv,glm],dict(name=name,position=position,year=year))
+    main(None,[csv,glm])
