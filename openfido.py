@@ -30,11 +30,8 @@ CONFIGURATION
 
 import os, sys, shutil, json, csv
 
-sys.path.append(".")
-
-import __init__ as weather
-
 OPENFIDO_INPUT = os.getenv("OPENFIDO_INPUT")
+OPENFIDO_OUTPUT = os.getenv("OPENFIDO_OUTPUT")
 
 try:
     with open(f"{OPENFIDO_INPUT}/config.csv","r") as f:
@@ -58,9 +55,10 @@ except Exception as err:
         printf("LATLON,latitude,longitude",file=f)
         exit(1)
 
-OPENFIDO_OUTPUT = os.getenv("OPENFIDO_OUTPUT")
-
 os.chdir("/tmp")
+
+sys.path.append(".")
+import __init__ as weather
 
 weather.email = EMAIL
 weather.addkey(APIKEY)
