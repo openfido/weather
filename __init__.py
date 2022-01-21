@@ -519,7 +519,6 @@ name = None
 
 def main(inputs,outputs,options={}):
     
-    print(f"weather.main(inputs={inputs},outputs={outputs},options={options}",file=sys.stderr)
     if type(options) is list:
         for option in options:
             if option[0] == "-":
@@ -555,18 +554,16 @@ def main(inputs,outputs,options={}):
     if len(outputs) > 1:
         glm = outputs[1]
 
-    if position and year:
-
-        try:
-        
-            data = getyears(year,float(position[0]),float(position[1]))
-            writeglm(data,glm,name,csv)
-        
-        except Exception as err:
-        
-            if not debug_enable:
-                error(err,1)
-            raise
+    try:
+        breakpoint()
+        data = getyears(year,float(position[0]),float(position[1]))
+        writeglm(data,glm,name,csv)
+    
+    except Exception as err:
+    
+        if not debug_enable:
+            error(err,1)
+        raise
 
 if __name__ == "__main__":
 
