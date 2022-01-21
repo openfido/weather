@@ -34,15 +34,15 @@ file.
 
 """
 
-import os, sys, shutil, json, csv
-
-OPENFIDO_INPUT = os.getenv("OPENFIDO_INPUT")
-OPENFIDO_OUTPUT = os.getenv("OPENFIDO_OUTPUT")
-
-GLMFILE = "/dev/null"
-NAME = None
-
 try:
+
+    import os, sys, shutil, json, csv
+
+    OPENFIDO_INPUT = os.getenv("OPENFIDO_INPUT")
+    OPENFIDO_OUTPUT = os.getenv("OPENFIDO_OUTPUT")
+
+    GLMFILE = "/dev/null"
+    NAME = None
 
     with open(f"{OPENFIDO_INPUT}/config.csv","r") as f:
         reader = csv.reader(f)
@@ -54,22 +54,23 @@ try:
             elif len(line) > 2:
                 globals()[line[0]] = line[1:]
 
+    os.chdir("/tmp")
+
+    sys.path.append(".")
+    import __init__ as weather
+
+    weather.email = EMAIL
+    weather.addkey(APIKEY)
+    outputs = [CSVFILE,GLMFILE]
+
+    weather.main([],outputs,{"year":YEARS,"position":LATLON,"name":NAME})
+
+    for file in outputs:
+        if file and file != "/dev/null":
+            shutil.copyfile(file,f"{OPENFIDO_OUTPUT}/{file}")
+
 except Exception as err:
 
     print(f"\n*** ERROR ***\n{err}\n\nHelp on {__doc__}")
     raise
 
-os.chdir("/tmp")
-
-sys.path.append(".")
-import __init__ as weather
-
-weather.email = EMAIL
-weather.addkey(APIKEY)
-outputs = [CSVFILE,GLMFILE]
-
-weather.main([],outputs,{"year":YEARS,"position":LATLON,"name":NAME})
-
-for file in outputs:
-    if file and file != "/dev/null":
-        shutil.copyfile(file,f"{OPENFIDO_OUTPUT}/{file}")
