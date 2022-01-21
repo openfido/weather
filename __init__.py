@@ -521,7 +521,7 @@ def main(inputs,outputs,options={}):
         for option in options:
             if "=" in option:
                 spec = option.split("=")
-                locals()[spec[0]] = "=".join(spec[1:]))
+                locals()[spec[0]] = "=".join(spec[1:])
             else:
                 raise Exception(f"{options} is invalid ")
     else:
