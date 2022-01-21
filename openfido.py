@@ -40,6 +40,7 @@ GLMFILE = "/dev/null"
 NAME = None
 
 try:
+
     with open(f"{OPENFIDO_INPUT}/config.csv","r") as f:
         reader = csv.reader(f)
         for line in reader:
@@ -49,8 +50,10 @@ try:
                 globals()[line[0]] = line[1]
             elif len(line) > 2:
                 globals()[line[0]] = line[1:]
+
 except Exception as err:
-    print(f"ERROR: {err}, see https://github.com/openfido/weather/example/config.csv for a template",file=sys.stderr)
+
+    print(f"ERROR: {err}\n\nHelp on {__doc__}",file=sys.stderr)
     exit(1)
 
 os.chdir("/tmp")
@@ -67,4 +70,3 @@ weather.main([],outputs,{"year":YEARS,"position":LATLON,"name":NAME})
 for file in outputs:
     if file and file != "/dev/null":
         shutil.copyfile(file,f"{OPENFIDO_OUTPUT}/{file}")
-
