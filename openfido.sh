@@ -12,11 +12,10 @@ function on_error()
 
 trap "on_error" ERR
 
-TMPDIR=/tmp/nsrdb_weather
+TMPDIR=/tmp/weather_$$
+rm -rf ${TMPDIR}
 mkdir -p ${TMPDIR}
 cd ${TMPDIR}
-
-cp -r $OPENFIDO_INPUT/* .
 
 CSVFILE="weather.csv"
 GLMFILE="weather.glm"
@@ -26,6 +25,8 @@ NAME="test"
 
 git clone https://github.com/openfido/weather -b develop weather
 
-python3 -m weather /dev/null  ${CSVFILE},${GLMFILE} year=${YEAR} position=${LATLON} name=
+python3 weather/__init__.py -y=${YEAR} -p=${LATLON} -n=${NAME} -c=${CSVFILE} -g=${GLMFILE}
 
-cp ${TMPDIR}/* ${OPENFIDO_OUTPUT}
+cp ${TMPDIR}/{${CSVFILE},${GLMFILE}} ${OPENFIDO_OUTPUT}
+
+rm -rf ${TMPDIR}
