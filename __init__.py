@@ -519,7 +519,6 @@ name = None
 
 def main(inputs,outputs,options={}):
     
-    breakpoint()
     if type(options) is list:
         for option in options:
             if option[0] == "-":
@@ -538,6 +537,16 @@ def main(inputs,outputs,options={}):
 
     if not name:
         raise Exception("name not specified")
+
+    if inputs:
+        raise Exception("weather does not take inputs")
+
+    if not type(outputs) is list:
+        raise Exception("outputs list is not valid")
+
+    csv = outputs[0]
+    if len(outputs) > 1:
+        glm = outputs[1]
 
     if position and year:
 
