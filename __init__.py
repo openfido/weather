@@ -511,6 +511,27 @@ def writeglm(data, glm=None, name=None, csv=None):
     weather.to_csv(csv,header=False,float_format=float_format,date_format="%s")
     return dict(glm=glm,csv=csv,name=name)
 
+def main(inputs,output,options={}):
+
+	for name, value in options.items():
+		setattr(name,value)
+
+	if not name:
+		raise Exception("name not specified")
+
+    if position and year:
+
+        try:
+        
+            data = getyears(year,float(position[0]),float(position[1]))
+            writeglm(data,glm,name,csv)
+        
+        except Exception as err:
+        
+            if not debug_enable:
+                error(err,1)
+            raise
+
 if __name__ == "__main__":
     year = None
     position = None
@@ -604,16 +625,5 @@ if __name__ == "__main__":
             shutil.rmtree(cachedir)
         else:
             error(f"option '{token}' is not valid",1)
-    if position and year:
-        data = getyears(year,float(position[0]),float(position[1]))
-        writeglm(data,glm,name,csv)
-
-    if position and year:
-        try:
-            data = getyears(year,float(position[0]),float(position[1]))
-            writeglm(data,glm,name,csv)
-        except Exception as err:
-            if not debug_enable:
-                error(err,1)
-            raise
-
+    
+    main(None,[csv,glm],dict(name=name,position=position,year=year))
