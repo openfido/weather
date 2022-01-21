@@ -513,18 +513,16 @@ def writeglm(data, glm=None, name=None, csv=None):
 
 def main(inputs,outputs,options={}):
     
+    position = None
+    year = None
+    name = None
+
     if type(options) is list:
         for option in options:
-        if "=" in option:
-            opt_defined = option.split("=")
-            if opt_defined[0] in PROCCONFIG.keys():
-                if opt_defined[0] == "postproc":
-                    PROCCONFIG[opt_defined[0]] = [opt_defined[1]]
-                else:
-                    try:
-                        PROCCONFIG[opt_defined[0]] = opt_defined[1]
-                    except:
-                        raise Exception(f"option {option} unexpected")
+            if "=" in option:
+                spec = option.split("=")
+            else:
+                raise Exception(f"{options} is invalid ")
     else:
         for name, value in options.items():
             setattr(name,value)
