@@ -4,8 +4,8 @@ set -e # print commands
 set -x # exit on error
 set -u # nounset enabled
 
-apt-get update -y > /dev/stderr
-apt-get install python3 python3-pip -q -y > /dev/stderr
-python3 -m pip install -r requirements.txt -q
+apt-get -q -y update > /dev/null
+apt-get -q -y install python3 python3-pip > /dev/null
+python3 -m pip install -q -r requirements.txt > /dev/null
 
 python3 openfido.py
