@@ -539,7 +539,7 @@ def main(inputs,outputs,options={}):
     if not name:
         raise Exception("name not specified")
 
-    if inputs:
+    if inputs and inputs != ['/dev/null']:
         raise Exception("weather does not take inputs")
 
     if not type(outputs) is list:
@@ -651,4 +651,4 @@ if __name__ == "__main__":
         else:
             error(f"option '{token}' is not valid",1)
     
-    main(None,[csv,glm])
+    main(inputs=None,outputs=[csv,glm])
