@@ -1,5 +1,13 @@
 #!/bin/sh
 
+function on_error()
+{
+    echo "*** ABNORMAL TERMINATION ***"
+    echo "See error console output for details."
+}
+
+trap "on_error" ERR
+
 set -e # print commands
 set -x # exit on error
 set -u # nounset enabled
