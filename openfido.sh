@@ -1,9 +1,14 @@
 #!/bin/python3
-import os, sys, shutil
-
-OPENFIDO_OUTPUT = os.getenv("OPENFIDO_OUTPUT")
 
 try:
+
+    import os, sys, shutil
+
+    sys.path.append(".")
+
+    import weather
+
+    OPENFIDO_OUTPUT = os.getenv("OPENFIDO_OUTPUT")
 
     CSVFILE="weather.csv"
     GLMFILE="weather.glm"
@@ -11,10 +16,6 @@ try:
     YEARS=[2020]
     NAME="test"
     BRANCH="develop"
-
-    os.system(f"curl -sL https://raw.githubusercontent.com/openfido/weather/{BRANCH}/__init__.py > weather.py")
-
-    import weather
 
     os.chdir("/tmp")
 
@@ -24,4 +25,9 @@ try:
 
     for RESULT in outputs:
         shutil.copyfile(RESULT,OPENFIDO_OUTPUT)
+
+except Exception as err:
+
+    print("\n\n*** ABNORMAL TERMINATION ***\nSee error console output for details.")
+    raise
 
