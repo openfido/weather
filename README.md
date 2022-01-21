@@ -3,19 +3,20 @@ OpenFIDO weather pipeline
 
 The weather pipeline collates weather data for a location and set of years.
 
-If only the CSVFILE is specified, then the output includes a header row.  If
-the GLMFILE is also specified, then the output does not include a header row
-and the column names are identified in the GLM weather object.
+If only the *CSVFILE* is specified, then the CSV output includes a header row.
+If the *GLMFILE* is also specified, then the CSV output does not include a
+header row and the column names are identified in the GLM weather object.
 
 INPUTS
 ------
 
-`config.csv` - The run configuration file is required (see CONFIGURATION below)
+`config.csv` - The run configuration file is required (see CONFIGURATION below).
 
 OUTPUTS
 -------
 
-*CSVFILE* - Must be specified in `config.csv`. The following columns are provided:
+*CSVFILE* - Must be specified in `config.csv`. The following columns are
+ provided:
 
     datetime
     solar_global[W/sf]
@@ -32,7 +33,7 @@ OUTPUTS
     pressure[mbar]
     heat_index[degF]
 
-*GLMFILE* - Only if specified in config.csv. The model file includes the
+*GLMFILE* - Only if specified in `config.csv`. The model file includes the
  global "WEATHER", which enumerates the weather object name included.
 
 CONFIGURATION
@@ -41,7 +42,7 @@ CONFIGURATION
 The following is a summary of parameters that are supported by the config.csv
 file.
 
-Template:
+Template for `config.csv`:
 
     CSVFILE,filename.csv
     GLMFILE,filename.glm
