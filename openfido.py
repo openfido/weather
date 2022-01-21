@@ -39,7 +39,12 @@ OPENFIDO_INPUT = os.getenv("OPENFIDO_INPUT")
 with open(f"{OPENFIDO_INPUT}/config.csv") as f:
     reader = csv.reader(f)
     for line in reader:
-        globals()[line[0]] = line[1:]
+        if len(line) == 1:
+            globals()[line[0]] = True
+        elif len(line) == 2:
+            globals()[line[0]] = line[1]
+        elif len(line) > 2:
+            globals()[line[0]] = line[1:]
 
 OPENFIDO_OUTPUT = os.getenv("OPENFIDO_OUTPUT")
 
@@ -47,10 +52,10 @@ os.chdir("/tmp")
 
 weather.email = EMAIL
 weather.addkey(APIKEY)
-outputs = [CSVFILE[0],GLMFILE[0]]
+outputs = [CSVFILE,GLMFILE]
 
-weather.main([],outputs,{"year":YEARS,"position":LATLON,"name":NAME[0]})
+weather.main([],outputs,{"year":YEARS,"position":LATLON,"name":NAME})
 
-for RESULT in outputs:
-    shutil.copyfile(RESULT,OPENFIDO_OUTPUT)
+for file in outputs:
+    shutil.copyfile(file,f"{OPENFIDO_OUTPUT}/{file}")
 
