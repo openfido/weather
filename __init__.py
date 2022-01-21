@@ -519,6 +519,7 @@ name = None
 
 def main(inputs,outputs,options={}):
     
+    breakpoint()
     if type(options) is list:
         for option in options:
             if option[0] == "-":
