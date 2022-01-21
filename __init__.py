@@ -521,16 +521,19 @@ def main(inputs,outputs,options={}):
     
     if type(options) is list:
         for option in options:
-            if "=" in option:
+            if option[0] == "-":
+                raise Exception(f"flag '{option}' is invalid")
+            elif "=" in option:
                 spec = option.split("=")
-                globals()[spec[0]] = "=".join(spec[1:])
+                if spec[0] in globals().keys():
+                    globals()[spec[0]] = "=".join(spec[1:])
+                else:
+                    raise Exception(f"option name '{spec[0]}' is not found")
             else:
                 raise Exception(f"{options} is invalid ")
     else:
         for name, value in options.items():
             globals()[name] = value
-
-    print(dir(locals()))
 
     if not name:
         raise Exception("name not specified")
