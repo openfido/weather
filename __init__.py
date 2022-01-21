@@ -524,7 +524,7 @@ def main(inputs,outputs,options={}):
     global name
     global glm
     global csv
-    
+
     if type(options) is list:
         for option in options:
             if option[0] == "-":
@@ -565,7 +565,6 @@ def main(inputs,outputs,options={}):
         glm = outputs[1]
 
     try:
-        breakpoint()
         data = getyears(year,float(position[0]),float(position[1]))
         writeglm(data,glm,name,csv)
     
