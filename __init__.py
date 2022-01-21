@@ -533,8 +533,8 @@ def main(inputs,outputs,options={}):
             else:
                 raise Exception(f"{options} is invalid ")
     else:
-        for name, value in options.items():
-            globals()[name] = value
+        for option, value in options.items():
+            globals()[option] = value
 
     if not name:
         raise Exception("name not specified")
