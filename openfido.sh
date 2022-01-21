@@ -22,10 +22,11 @@ GLMFILE="weather.glm"
 LATLON="37.4,-122.2"
 YEAR="2020"
 NAME="test"
+BRANCH="develop"
 
-git clone https://github.com/openfido/weather -b develop weather
+curl -sL https://raw.githubusercontent.com/openfido/weather/${BRANCH}/__init__.py > weather.py
 
-python3 weather/__init__.py -y=${YEAR} -p=${LATLON} -n=${NAME} -c=${CSVFILE} -g=${GLMFILE}
+python3 weather.py -y=${YEAR} -p=${LATLON} -n=${NAME} -c=${CSVFILE} -g=${GLMFILE}
 
 cp ${TMPDIR}/{${CSVFILE},${GLMFILE}} ${OPENFIDO_OUTPUT}
 
