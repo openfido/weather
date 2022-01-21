@@ -7,7 +7,7 @@ on_error()
 {
     echo '*** ABNORMAL TERMINATION ***'
     echo 'See error Console Output stderr for details.'
-    exit(1)
+    exit 1
 }
 
 trap on_error 1 2 3 4 6 7 8 11 13 14 15
