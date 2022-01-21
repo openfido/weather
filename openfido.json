@@ -4,5 +4,5 @@
     "tooltype" : "pipeline",
     "valid" : true,
     "inputs" : -1,
-    "outputs" : 0,
+    "outputs" : 0
 }

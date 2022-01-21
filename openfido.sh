@@ -1,28 +1,24 @@
-#!/bin/bash
+#!/bin/sh
+#
+# Generic python environment for OpenFIDO
+#
+
+on_error()
+{
+    echo '*** ABNORMAL TERMINATION ***'
+    echo 'See error Console Output stderr for details.'
+    exit 1
+}
+
+trap on_error 1 2 3 4 6 7 8 11 13 14 15
 
 set -x # print commands
 set -e # exit on error
-set -u # nounset enable
+set -u # nounset enabled
 
-function on_error()
-{
-    echo "*** ABNORMAL TERMINATION ***"
-    echo "See error console output for details."
-}
+export DEBIAN_FRONTEND=noninteractive
+apt-get -q -y update > /dev/null
+apt-get -q -y install python3 python3-pip > /dev/null
+python3 -m pip install -q -r requirements.txt > /dev/null
 
-trap "on_error" ERR
-
-TMPDIR=/tmp/nsrdb_weather
-mkdir -p ${TMPDIR}
-cd ${TMPDIR}
-
-cp -r $OPENFIDO_INPUT/* .
-
-CSVFILE="weather.csv"
-GLMFILE="weather.glm"
-LATLON="37.4,-122.2"
-YEAR="2020"
-
-gridlabd nsrdb_weather -y=${YEAR} -p=${LATLON} -c=${CSVFILE} -g=${GLMFILE}
-
-cp ${TMPDIR}/* ${OPENFIDO_OUTPUT}
+python3 openfido.py || on_error
