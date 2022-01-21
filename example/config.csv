@@ -1,0 +1,7 @@
+CSVFILE,weather-file.csv
+GLMFILE,weather-model.glm
+NAME,weather-name
+EMAIL,your.email@your.org
+APIKEY,yourapikey
+YEARS,year1,year2,...
+LATLON,latitude,longitude
