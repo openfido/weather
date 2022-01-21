@@ -1,33 +1,26 @@
 #!/bin/python3
 
-try:
+import os, sys, shutil
 
-    import os, sys, shutil
+sys.path.append(".")
 
-    sys.path.append(".")
+import __init__ as weather
 
-    import __init__ as weather
+OPENFIDO_OUTPUT = os.getenv("OPENFIDO_OUTPUT")
 
-    OPENFIDO_OUTPUT = os.getenv("OPENFIDO_OUTPUT")
+CSVFILE="weather.csv"
+GLMFILE="weather.glm"
+LATLON=[37.4,-122.2]
+YEARS=[2020]
+NAME="test"
+BRANCH="develop"
 
-    CSVFILE="weather.csv"
-    GLMFILE="weather.glm"
-    LATLON=[37.4,-122.2]
-    YEARS=[2020]
-    NAME="test"
-    BRANCH="develop"
+os.chdir("/tmp")
 
-    os.chdir("/tmp")
+outputs = [CSVFILE,GLMFILE]
 
-    outputs = [CSVFILE,GLMFILE]
+weather.main([],outputs,{"year":YEARS,"position":LATLON,"name":NAME})
 
-    weather.main([],outputs,{"year":YEARS,"position":LATLON,"name":NAME})
-
-    for RESULT in outputs:
-        shutil.copyfile(RESULT,OPENFIDO_OUTPUT)
-
-except Exception as err:
-
-    print("\n\n*** ABNORMAL TERMINATION ***\nSee error console output for details.")
-    raise
+for RESULT in outputs:
+    shutil.copyfile(RESULT,OPENFIDO_OUTPUT)
 
