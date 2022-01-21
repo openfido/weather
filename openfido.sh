@@ -17,7 +17,7 @@ set -u # nounset enabled
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get -q -y update > /dev/null
-apt-get -q -y install python3 python3-pip | grep -v '^debconf: delaying package configuration, since apt-utils is not installed' > /dev/null
+apt-get -q -y install python3 python3-pip > /dev/null
 python3 -m pip install -q -r requirements.txt > /dev/null
 
 python3 openfido.py
