@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-function on_error()
+on_error()
 {
     echo "*** ABNORMAL TERMINATION ***"
     echo "See error console output for details."
