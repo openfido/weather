@@ -539,6 +539,12 @@ def main(inputs,outputs,options={}):
     if not name:
         raise Exception("name not specified")
 
+    if not position:
+        raise Exception("position not specified")
+
+    if not year:
+        raise Exception("year not specified")
+
     if inputs and inputs != ['/dev/null']:
         raise Exception("weather does not take inputs")
 
