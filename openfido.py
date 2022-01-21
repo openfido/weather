@@ -6,7 +6,7 @@ try:
 
     sys.path.append(".")
 
-    import weather
+    import __init__ as weather
 
     OPENFIDO_OUTPUT = os.getenv("OPENFIDO_OUTPUT")
 
