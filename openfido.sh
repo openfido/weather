@@ -22,7 +22,10 @@ CSVFILE="weather.csv"
 GLMFILE="weather.glm"
 LATLON="37.4,-122.2"
 YEAR="2020"
+NAME="test"
 
-gridlabd nsrdb_weather -y=${YEAR} -p=${LATLON} -c=${CSVFILE} -g=${GLMFILE}
+git clone https://github.com/openfido/weather -b develop weather
+
+python3 -m weather /dev/null  ${CSVFILE},${GLMFILE} year=${YEAR} position=${LATLON} name=
 
 cp ${TMPDIR}/* ${OPENFIDO_OUTPUT}
