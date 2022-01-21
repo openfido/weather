@@ -540,9 +540,13 @@ def main(inputs,outputs,options={}):
 
     if not position:
         raise Exception("position not specified")
+    elif type(position) is str:
+        position = list(map(lambda x,float(x):position.split(",")))
 
     if not year:
         raise Exception("year not specified")
+    elif type(year) is str:
+        year = list(map(lambda x,int(x):year.split(",")))
 
     if inputs and inputs != ['/dev/null']:
         raise Exception("weather does not take inputs")
