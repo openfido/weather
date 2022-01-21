@@ -521,6 +521,7 @@ def main(inputs,outputs,options={}):
         for option in options:
             if "=" in option:
                 spec = option.split("=")
+                setattr(spec[0],"=".join(spec[1:]))
             else:
                 raise Exception(f"{options} is invalid ")
     else:
