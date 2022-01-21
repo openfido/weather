@@ -461,9 +461,10 @@ def writeglm(data, glm=None, name=None, csv=None):
     """Write weather object based on NSRDB data
 
     Default GLM and CSV values are handled as follows
+
     GLM    CSV    Output
-    ------ ------ ------
-    None   None   CSV->stdout
+    ------ ------ -------------------------------
+    None   None   CSV->stdout 
     GLM    None   GLM, CSV->GLM/.glm/.csv
     None   CSV    GLM->stdout, CSV
     GLM    CSV    GLM, CSV
@@ -480,36 +481,40 @@ def writeglm(data, glm=None, name=None, csv=None):
         weather = pandas.concat(data["DataFrame"])
     else:
         weather = data["DataFrame"]
-    if ( not csv and not glm ) or glm == "/dev/null":
-        weather.to_csv("/dev/stdout",header=True,float_format=float_format,date_format=date_format)
-        return dict(glm=None,csv="/dev/stdout",name=None)
-    if not glm:
-        glm = "/dev/stdout"
-    if not csv:
+    if not csv and not glm:
+        csv = "/dev/stdout"
+    elif not csv:
         csv = f"{name}.csv"
-    with open(glm,"w") as f:
-        f.write("class weather\n{\n")
-        for column in weather.columns:
-            f.write(f"\tdouble {column};\n")
-        f.write("}\n")
-        weather.columns = list(map(lambda x:x.split('[')[0],weather.columns))
-        f.write("module tape;\n")
-        f.write("#ifdef WEATHER\n")
-        f.write(f"#set WEATHER=$WEATHER {name}\n")
-        f.write("#else\n")
-        f.write(f"#define WEATHER={name}\n")
-        f.write("#endif\n")
-        f.write("object weather\n{\n")
-        f.write(f"\tname \"{name}\";\n")
-        f.write(f"\tlatitude {lat};\n")
-        f.write(f"\tlongitude {lon};\n")
-        f.write("\tobject player\n\t{\n")
-        f.write(f"\t\tfile \"{csv}\";\n")
-        f.write(f"\t\tproperty \"{','.join(weather.columns)}\";\n")
-        f.write("\t};\n")
-        f.write("}\n")
-    weather.to_csv(csv,header=False,float_format=float_format,date_format="%s")
-    return dict(glm=glm,csv=csv,name=name)
+    elif not glm:
+        glm = "/dev/stdout"
+    if glm and glm != "/dev/null":
+        with open(glm,"w") as f:
+            f.write("class weather\n{\n")
+            for column in weather.columns:
+                f.write(f"\tdouble {column};\n")
+            f.write("}\n")
+            weather.columns = list(map(lambda x:x.split('[')[0],weather.columns))
+            f.write("module tape;\n")
+            f.write("#ifdef WEATHER\n")
+            f.write(f"#set WEATHER=$WEATHER {name}\n")
+            f.write("#else\n")
+            f.write(f"#define WEATHER={name}\n")
+            f.write("#endif\n")
+            f.write("object weather\n{\n")
+            f.write(f"\tname \"{name}\";\n")
+            f.write(f"\tlatitude {lat};\n")
+            f.write(f"\tlongitude {lon};\n")
+            f.write("\tobject player\n\t{\n")
+            f.write(f"\t\tfile \"{csv}\";\n")
+            f.write(f"\t\tproperty \"{','.join(weather.columns)}\";\n")
+            f.write("\t};\n")
+            f.write("}\n")
+            weather.to_csv(csv,header=False,float_format=float_format,date_format="%s")
+            return dict(glm=glm,csv=csv,name=name)
+    else:
+        weather.to_csv(csv,header=True,float_format=float_format,date_format=date_format)
+        return dict(glm=None,csv=csv,name=None)
+
 
 year = None
 position = None
@@ -540,9 +545,6 @@ def main(inputs,outputs,options={}):
     else:
         for option, value in options.items():
             globals()[option] = value
-
-    if not name:
-        raise Exception("name not specified")
 
     if not position:
         raise Exception("position not specified")
