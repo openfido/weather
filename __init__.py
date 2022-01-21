@@ -519,6 +519,7 @@ name = None
 
 def main(inputs,outputs,options={}):
     
+    print(f"weather.main(inputs={inputs},outputs={outputs},options={options}",file=sys.stderr)
     if type(options) is list:
         for option in options:
             if option[0] == "-":
@@ -562,12 +563,6 @@ def main(inputs,outputs,options={}):
             raise
 
 if __name__ == "__main__":
-
-    # year = "2020"
-    # position = "37.5,-122.2"
-    # glm = "/tmp/weather.glm"
-    # name = "test"
-    # csv = "/tmp/weather.csv"
 
     if len(sys.argv) == 1:
         syntax(1)
