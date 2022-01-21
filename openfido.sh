@@ -1,33 +1,26 @@
-#!/bin/bash
+import os, sys, shutil
 
-set -x # print commands
-set -e # exit on error
-set -u # nounset enable
+OPENFIDO_OUTPUT = os.getenv("OPENFIDO_OUTPUT")
 
-function on_error()
-{
-    echo "*** ABNORMAL TERMINATION ***"
-    echo "See error console output for details."
-}
+try:
 
-trap "on_error" ERR
+    CSVFILE="weather.csv"
+    GLMFILE="weather.glm"
+    LATLON=[37.4,-122.2]
+    YEARS=[2020]
+    NAME="test"
+    BRANCH="develop"
 
-TMPDIR=/tmp/weather_$$
-rm -rf ${TMPDIR}
-mkdir -p ${TMPDIR}
-cd ${TMPDIR}
+    os.system(f"curl -sL https://raw.githubusercontent.com/openfido/weather/{BRANCH}/__init__.py > weather.py")
 
-CSVFILE="weather.csv"
-GLMFILE="weather.glm"
-LATLON="37.4,-122.2"
-YEAR="2020"
-NAME="test"
-BRANCH="develop"
+    import weather
 
-curl -sL https://raw.githubusercontent.com/openfido/weather/${BRANCH}/__init__.py > weather.py
+    os.chdir("/tmp")
 
-python3 weather.py -y=${YEAR} -p=${LATLON} -n=${NAME} -c=${CSVFILE} -g=${GLMFILE}
+    outputs = [CSVFILE,GLMFILE]
 
-cp ${TMPDIR}/{${CSVFILE},${GLMFILE}} ${OPENFIDO_OUTPUT}
+    weather.main([],outputs,{"year":YEARS,"position":LATLON,"name":NAME})
 
-rm -rf ${TMPDIR}
+    for RESULT in outputs:
+        shutil.copyfile(RESULT,OPENFIDO_OUTPUT)
+
