@@ -1,15 +1,18 @@
 #!/bin/bash
+#
+# Generic python environment for OpenFIDO
+#
 
 on_error()
 {
-    echo "*** ABNORMAL TERMINATION ***"
-    echo "See error console output for details."
+    echo '*** ABNORMAL TERMINATION ***'
+    echo 'See error Console Output stderr for details.'
 }
 
-trap "on_error" ERR
+trap on_error 1 2 3 4 6 7 8 11 13 14 15
 
-set -e # print commands
-set -x # exit on error
+set -x # print commands
+set -e # exit on error
 set -u # nounset enabled
 
 apt-get -q -y update > /dev/null
