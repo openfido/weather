@@ -44,8 +44,7 @@ try:
             elif len(line) > 2:
                 globals()[line[0]] = line[1:]
 except Exception as err:
-    print("ERROR: {err}, see output for an example config.csv",file=sys.stderr)
-    shutil.copyfile("example/config.csv",f"{OPENFIDO_OUTPUT}/config.csv")
+    print(f"ERROR: {err}, example/config.csv for a template",file=sys.stderr)
     exit(1)
 
 os.chdir("/tmp")
