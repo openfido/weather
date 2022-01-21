@@ -538,18 +538,15 @@ def main(inputs,outputs,options={}):
     if not name:
         raise Exception("name not specified")
 
-    # DPC: it's weird but if both input and output are specified it means inputs
-    #      are specified, which they cannot. So in effect inputs are outputs and
-    #      outputs should not be specified.
-    if outputs:
+    if inputs:
         raise Exception("weather does not take inputs")
 
-    if not type(inputs) is list:
+    if not type(outputs) is list:
         raise Exception("outputs list is not valid")
 
-    csv = inputs[0]
-    if len(inputs) > 1:
-        glm = inputs[1]
+    csv = outputs[0]
+    if len(outputs) > 1:
+        glm = outputs[1]
 
     if position and year:
 
