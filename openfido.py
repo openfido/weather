@@ -1,4 +1,10 @@
-"""weather pipeline
+"""OpenFIDO weather pipeline
+
+The weather pipeline collates weather data for a location and set of years.
+
+If only the CSVFILE is specified, then the output includes a header row.  If
+the GLMFILE is also specified, then the output does not include a header row
+and the column names are identified in the GLM weather object.
 
 INPUTS
 
@@ -6,17 +12,14 @@ INPUTS
 
 OUTPUTS
 
-    CSVFILE
+    CSVFILE (if specified in config.csv)
 
-    GLMFILE
-
-ENVIRONMENT
-
-    OPENFIDO_INPUT
-
-    OPENFIDO_OUTPUT
+    GLMFILE (if specified in config.csv)
 
 CONFIGURATION
+
+The following is a summary of parameters that are supported by the config.csv
+file.
 
     CSVFILE,filename.csv
     GLMFILE,filename.glm
@@ -32,6 +35,9 @@ import os, sys, shutil, json, csv
 
 OPENFIDO_INPUT = os.getenv("OPENFIDO_INPUT")
 OPENFIDO_OUTPUT = os.getenv("OPENFIDO_OUTPUT")
+
+GLMFILE = None
+NAME = None
 
 try:
     with open(f"{OPENFIDO_INPUT}/config.csv","r") as f:
