@@ -65,6 +65,6 @@ outputs = [CSVFILE,GLMFILE]
 weather.main([],outputs,{"year":YEARS,"position":LATLON,"name":NAME})
 
 for file in outputs:
-    if file && file != "/dev/null":
+    if file and file != "/dev/null":
         shutil.copyfile(file,f"{OPENFIDO_OUTPUT}/{file}")
 
