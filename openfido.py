@@ -36,7 +36,7 @@ import os, sys, shutil, json, csv
 OPENFIDO_INPUT = os.getenv("OPENFIDO_INPUT")
 OPENFIDO_OUTPUT = os.getenv("OPENFIDO_OUTPUT")
 
-GLMFILE = None
+GLMFILE = "/dev/null"
 NAME = None
 
 try:
@@ -65,5 +65,6 @@ outputs = [CSVFILE,GLMFILE]
 weather.main([],outputs,{"year":YEARS,"position":LATLON,"name":NAME})
 
 for file in outputs:
-    shutil.copyfile(file,f"{OPENFIDO_OUTPUT}/{file}")
+    if file && file != "/dev/null":
+        shutil.copyfile(file,f"{OPENFIDO_OUTPUT}/{file}")
 
