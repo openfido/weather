@@ -480,7 +480,7 @@ def writeglm(data, glm=None, name=None, csv=None):
         weather = pandas.concat(data["DataFrame"])
     else:
         weather = data["DataFrame"]
-    if not csv and not glm:
+    if ( not csv and not glm ) or glm == "/dev/null":
         weather.to_csv("/dev/stdout",header=True,float_format=float_format,date_format=date_format)
         return dict(glm=None,csv="/dev/stdout",name=None)
     if not glm:
