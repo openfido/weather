@@ -31,7 +31,6 @@ file.
     APIKEY,your-api-key
     YEARS,year1,year2,...
     LATLON,latitude,longitude
-
 """
 
 try:
