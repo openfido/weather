@@ -518,16 +518,15 @@ def main(inputs,outputs,options={}):
     name = None
 
     if type(options) is list:
-        new_options = {}
         for option in options:
             if "=" in option:
                 spec = option.split("=")
-                new_options[spec[0]] = "=".join(spec[1:])
+                locals()[spec[0]] = "=".join(spec[1:]))
             else:
                 raise Exception(f"{options} is invalid ")
-        options = new_options
-    for name, value in options.items():
-        setattr(locals(),name,value)
+    else:
+        for name, value in options.items():
+            locals()[name] = value
 
     if not name:
         raise Exception("name not specified")
