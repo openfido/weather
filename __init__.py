@@ -513,6 +513,8 @@ def writeglm(data, glm=None, name=None, csv=None):
 
 def main(inputs,outputs,options={}):
     
+    print(options)
+    
     for name, value in options.items():
         setattr(name,value)
 
