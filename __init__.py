@@ -1,142 +1,34 @@
-"""NSRDB weather data tool
+"""Weather pipeline
 
 SYNOPSIS
 
-Shell:
-    bash$ gridlabd nsrdb_weather -y|--year=YEARS -p|-position=LAT,LON 
-        [-i|--interpolate=MINUTES|METHOD] [-e|--encode=LAT,LON]
-        [-g|--glm=GLMNAME] [-n|--name=OBJECTNAME] [-c|--csv=CSVNAME] 
-        [--whoami] [--signup=EMAIL] [--apikey[=APIKEY]]
-        [--test] [-v|--verbose] [--clear] [-h|--help|help] 
+Pipeline:
 
-GLM:
-    #system gridlabd nsrdb_weather -y|--year=YEARS -p|-position=LAT,LON 
-        [-i|--interpolate=MINUTES|METHOD] [-e|--encode=LAT,LON]
-        [-g|--glm=GLMNAME] [-n|--name=OBJECTNAME] [-c|--csv=CSVNAME] 
-        [--whoami] [--signup=EMAIL] [--apikey[=APIKEY]]
-        [--test] [-v|--verbose] [--clear] [-h|--help|help]
-    #include "GLMNAME"
+    Setting                   Recommended value                        
+    -----------------------   ---------------------------------------- 
+    Pipeline name             Weather                                  
+    Description               NSRDB historical weather data downloader 
+    DockerHub Repository      debian:11                                
+    Git Clone URL (https)     https://github.com/openfido/weather.     
+    Repository Branch         main                                     
+    Entrypoint Script (.sh)   openfido.sh                              
 
-Python:
-    bash$ gridlabd python
-    >>> import nsrdb_weather as ns
-    >>> data = ns.getyears(YEARS,LAT,LON)
-    >>> ns.writeglm(data,GLMNAME,OBJECTNAME,CSVNAME)
+CLI:
+
+    sh$ openfido install weather
+    sh$ openfido run year=YEAR1,YEAR2,... position=LATITUDE,LONGITUDE /dev/null CSVNAME,{/dev/null,GLMNAME}
 
 DESCRIPTION
 
-This module downloads weather data from NSRDB and writes GLM files.  This can
-be done from the command line or using call the python API.
+The weather pipeline collates weather data for a location and set of years.
 
-Downloaded weather data is for a specified location and year, which must be
-provided. The data is downloaded in either 30 or 60 intervals and cached for
-later used.  The data that is delivered from the cache can be further
-interpolated down to 1 minute. Use the `--clear` option to clear the cache.
+If only the *CSVFILE* is specified, then the CSV output includes a header row.
+If the *GLMFILE* is also specified, then the CSV output does not include a
+header row and the column names are identified in the GLM weather object.
 
-By default the weather data is output to /dev/stdout.  If the CSV file name 
-is specified using `-c|--csv=CSVNAME, the data will be written to that file.  
+SEE ALSO:
 
-If the GLM file name is specified, the CSV file will be formatted for
-compatibility with GridLAB-D players and the GLM file will contain a
-definition of the weather class, a weather object, and a player object to
-feed the weather data in from the CSV.  If the weather object name is not
-provided, then the name is automatically generated using a geohash code at
-about 2.5 km resolution, e.g., "weather@9q9j6".  To change the geohash
-resolution, you must change the `geocode_precision` parameter. To determine
-the geohash for a location use the `-e|--encode` option.
-
-The GLM file can be output to "/dev/stdout" for embedding in other GLM files.
-For example:
-
-    #include (gridlabd nsrdb_weather -y=2010 -p=37.5,-122.2 -g=/dev/stdout)
-
-This is equivalent to 
-
-    #gridlabd gridlabd nsrdb_weather -y=2010 -p=37.5,-122.2 -g=/tmp/example.glm
-    #include "/tmp/example.glm"
-
-without the creation of the temporary file.
-
-The global `${WEATHER}` is set to a space-delimited list of the weather 
-objects defined in the GLM file.
-
-PARAMETERS
-
-The module uses several parameters to control its behavior. 
-
-    leap = True # include leap day in data
-    interval = 60 # sample interval, may be 30 or 60 minutes
-    utc = False # timestamps in UTC
-    email="gridlabd@gmail.com" # credential email
-    verbose = False # verbose output enable
-    server = "https://developer.nrel.gov/api/solar/nsrdb_psm3_download.csv" # NSRDB server URL
-    cachedir = "/usr/local/share/gridlabd/weather" # local NSRDB cache folder
-    attributes = 'ghi,dhi,dni,cloud_type,dew_point,air_temperature,surface_albedo,wind_speed,wind_direction,solar_zenith_angle' # NSRDB fields to download
-    credential_file = f"{os.getenv('HOME')}/.nsrdb/credentials.json" # local credential file location
-    geocode_precision = 5 # about 2.5 km geohash resolution (uses for automatic naming of weather objects)
-    float_format="%.1f"
-
-The geocode precisions are roughly as follows:
-
-    1   2,500 km
-    2   600 km
-    3   80 km
-    4   20 km
-    5   2.5 km
-    6   200 m
-    7   80 m
-    8   20 m
-    9   2.5 m
-    10  60 cm
-    11  7.5 cm
-
-You can change these options in Python scripts.
-
-    >>> import nsrdb_weather as ns
-    >>> ns.interval = 30
-    >>> data = ns.getyear(2014,45.62,-122.70)
-
-You can permanently change these options by creating the local or shared file
-called `nsrdb_weather_config.py`. If found, this file will be imported after
-the defaults are set. Note that the default year, position, glm, csv, and name
-cannot be changed.
-
-CREDENTIALS
-
-You must obtain an API key from https://developer.nrel.gov/signup/.  Save the key
-in the credentials file, which is by default `$HOME/.nsrdb/credentials.json`.
-
-You can run this process in a semi-automated manner using the command
-
-    bash$ gridlabd nsrdb_weather --signup
-
-with which you can copy and paste a new key in the credential file.
-
-CONFIGURATION
-
-The nsrdb_weather module loads the file `nsrdb_weather_config.py` after setting the 
-default values of the configure.  The configuration can be changed by creating this
-file in the current folder, or in a folder in the python path.
-
-CAVEATS
-
-Normally the column units are included in the column names when the CSV file is written. However
-when the GLM file is written, the column units are not included in the column names.  The units
-are given as part of the `weather` class definition generated by the GLM writer.
-
-EXAMPLE
-
-The following command downloads only the CSV data for a location:
-
-    bash$ gridlabd nsrdb_weather -y=2014,2015 -p=45.62,-122.70 -c=test.csv
-
-The following command downloads the CSV data and creates a GLM file with the data linked and weather object named:
-
-    bash$ gridlabd nsrdb_weather -y=2014,2015 -p=45.62,-122.70 -c=test.csv -n=test -g=test.glm
-
-SEE ALSO
-
-* [https://nsrdb.nrel.gov/data-sets/api-instructions.html]
+* https://github.com/openfido/weather/README.md
 """
 
 import sys, os, json, requests, pandas, numpy, datetime
