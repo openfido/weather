@@ -7,6 +7,20 @@ If only the *CSVFILE* is specified, then the CSV output includes a header row.
 If the *GLMFILE* is also specified, then the CSV output does not include a
 header row and the column names are identified in the GLM weather object.
 
+PIPELINE
+--------
+
+Recommended pipeline settings:
+
+| Setting                 | Recommended value                        |
+| ----------------------- | ---------------------------------------- |
+| Pipeline name           | Weather                                  |
+| Description             | NSRDB historical weather data downloader |
+| DockerHub Repository    | debian:11                                |
+| Git Clone URL (https)   | https://github.com/openfido/weather.     |
+| Repository Branch       | main                                     |
+| Entrypoint Script (.sh) | openfido.sh                              |
+
 INPUTS
 ------
 
