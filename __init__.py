@@ -151,7 +151,7 @@ server = "https://developer.nrel.gov/api/solar/nsrdb_psm3_download.csv"
 cachedir = "/usr/local/share/gridlabd/weather"
 attributes = 'ghi,dhi,dni,cloud_type,dew_point,air_temperature,surface_albedo,wind_speed,wind_direction,solar_zenith_angle,relative_humidity,surface_pressure'
 credential_file = f"{os.getenv('HOME')}/.nsrdb/credentials.json"
-geocode_precision = 6 
+geocode_precision = 5 
 float_format="%.1f"
 date_format="%Y-%m-%d %H:%M:%S"
 verbose_enable = False
@@ -356,6 +356,7 @@ def getyear(year,lat,lon):
             "humidity[%]",
             "pressure[mbar]",
             ]
+        data["clouds"] = data["clouds"].abs()
         data["solar_global[W/sf]"] /= 10.7639
         data["solar_horizontal[W/sf]"] /= 10.7639
         data["solar_direct[W/sf]"] /= 10.7639
@@ -491,7 +492,10 @@ def writeglm(data, glm=None, name=None, csv=None):
         with open(glm,"w") as f:
             f.write("class weather\n{\n")
             for column in weather.columns:
-                f.write(f"\tdouble {column};\n")
+                if column != "clouds":
+                    f.write(f"\tdouble {column};\n")
+                else:
+                    f.write("\tenumeration {CLEAR=0,PROBABLY_CLEAR=1, FOG=2, WATER=3, SUPERCOOLED_WATER=4, MIXED=5, OPAQUE_ICE=6, CIRRUS=7, OVERLAPPING=8, OVERSHOOTING=9, UNKNOWN=10, DUST=11, SMOKE=12, NA=15} clouds;\n")
             f.write("}\n")
             weather.columns = list(map(lambda x:x.split('[')[0],weather.columns))
             f.write("module tape;\n")
