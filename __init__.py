@@ -40,7 +40,7 @@ email = None # by default this will be the first key in the credentials file
 interpolate_time = None
 interpolate_method = 'linear'
 server = "https://developer.nrel.gov/api/solar/nsrdb_psm3_download.csv"
-cachedir = "/usr/local/share/gridlabd/weather"
+cachedir = "/usr/local/share/openfido/weather"
 attributes = 'ghi,dhi,dni,cloud_type,dew_point,air_temperature,surface_albedo,wind_speed,wind_direction,solar_zenith_angle,relative_humidity,surface_pressure'
 credential_file = f"{os.getenv('HOME')}/.nsrdb/credentials.json"
 geocode_precision = 5 
@@ -49,7 +49,7 @@ date_format="%Y-%m-%d %H:%M:%S"
 verbose_enable = False
 
 try:
-    from nsrdb_weather_config import *
+    from openfido_weather_config import *
 except:
     pass
 
@@ -119,7 +119,7 @@ def getkeys(new=False):
     except:
         if new:
             return {}
-        raise Exception("unable to get API key for NSRDB data - see `gridlabd nsrdb_weather help` for detail on NSRDB access credentials")
+        raise Exception("unable to get API key for NSRDB data")
     return keys
 
 def getkey(email=None):
@@ -519,12 +519,6 @@ if __name__ == "__main__":
             name = value
         elif token in ["-c","--csv"]:
             csv = value
-        elif token == "--test":
-            year = [2014,2015]
-            position = [45.62,-122.70]
-            glm = "test.glm"
-            writeglm(getyears(year,float(position[0]),float(position[1])),glm,name,csv)
-            exit(os.system(f"gridlabd {glm}"))
         elif token == "--signup":
             if not value:
                 error("you must provide an email address for the new credential",1)
@@ -536,7 +530,7 @@ if __name__ == "__main__":
                 addkey("PASTE_YOUR_APIKEY_HERE")
             import webbrowser
             webbrowser.open("https://developer.nrel.gov/signup/")
-            print(f"use `gridlabd nsrdb_weather --apikey=<your-apikey>` to set your api key")
+            print(f"use `gridlabd nsrdb_weather --apikey=<your-apikey>` to set your local api key")
         elif token == "--apikey":
             if not getemail():
                 error(f"you have not signed up yet, use `gridlabd {os.path.basename(sys.argv[0]).replace('.py','')} --signup=<your-email>` to sign up",1)
