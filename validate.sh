@@ -8,12 +8,6 @@ elif [ "$1" == "-q" -o "$1" == "--quiet" ]; then
     OUTPUT=/dev/null
 fi
 
-if [ -z "$(openfido show weather)" ]; then
-    openfido install weather >$OUTPUT
-else
-    openfido update weather >$OUTPUT
-fi
-
 TESTED=0
 FAILED=0
 run_test()
