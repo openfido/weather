@@ -16,7 +16,7 @@ Pipeline:
 CLI:
 
     sh$ openfido install weather
-    sh$ openfido run year=YEAR1,YEAR2,... position=LATITUDE,LONGITUDE /dev/null CSVNAME,{/dev/null,GLMNAME}
+    sh$ openfido run weather year=YEAR1,YEAR2,... position=LATITUDE,LONGITUDE /dev/null CSVNAME,{/dev/null,GLMNAME}
 
 DESCRIPTION
 

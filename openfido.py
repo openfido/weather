@@ -31,6 +31,13 @@ file.
     APIKEY,your-api-key
     YEARS,year1,year2,...
     LATLON,latitude,longitude
+
+EXAMPLE
+-------
+
+    shell$ openfido install weather
+    shell$ openfido run weather year=2020 position=37.4,-122.3 /dev/null /tmp/weather.csv,/dev/null
+
 """
 
 try:
@@ -62,7 +69,7 @@ try:
     weather.addkey(APIKEY)
     outputs = [CSVFILE,GLMFILE]
 
-    weather.main([],outputs,{"year":YEARS,"position":LATLON,"name":NAME})
+    weather.main([],outputs,{"year":year,"position":position,"name":name})
 
     for file in outputs:
         if file and file != "/dev/null":
