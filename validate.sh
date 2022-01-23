@@ -1,27 +1,38 @@
 #!/bin/bash
 cd autotest
 
-set -x
-
-if [ -z "$(openfido show weather)" ]; then
-    openfido install weather
-else
-    openfido update weather
+OUTPUT=/dev/stdout
+if [ "$1" == "-v" -o "$1" == "--verbose" ]; then
+    set -x
+elif [ "$1" == "-q" -o "$1" == "--quiet" ]; then
+    OUTPUT=/dev/null
 fi
 
+if [ -z "$(openfido show weather)" ]; then
+    openfido install weather >$OUTPUT
+else
+    openfido update weather >$OUTPUT
+fi
+
+TESTED=0
+FAILED=0
 run_test()
 {
-    echo Processing $1...
+    echo "Processing $1..." >$OUTPUT
+    TESTED=$(($TESTED+1))
     mkdir -p $1
     cd $1
     shift 1
-    openfido run weather $* 1>openfido.out 2>openfido.err
+    if ! openfido run weather $* 1>openfido.out 2>openfido.err; then
+        FAILED=$(($FAILED+1))
+        echo "ERROR: $(basename $PWD) test failed" > $OUTPUT
+    fi
     cd - > /dev/null
 }
 
 check_file()
 {
-    diff $1/$2 $2
+    diff $1/$2 $2 1>>$1/openfido.out 2>>$1/openfido.err|| (echo "ERROR: $1 check of $2 failed" > $OUTPUT)
 }
 
 # test simple weather query
@@ -37,3 +48,8 @@ check_file test_weather_glm weather_glm.glm
 run_test test_weather_name year=2020 position=37.4,-122.3 /dev/null weather_name.csv,weather_name.glm name=test
 check_file test_weather_name weather_name.csv
 check_file test_weather_name weather_name.glm
+
+echo "$TESTED tests processed" >$OUTPUT
+echo "$FAILED tests failed" >$OUTPUT
+
+exit $FAILED
