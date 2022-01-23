@@ -108,3 +108,5 @@ See EMAIL for details.
 are permitted by adding additional columns
 
 *LATLON* - Specifies the latitude and longitude for the weather data.
+
+You may use the download and open `index.html` to generate the configuration file.
