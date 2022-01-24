@@ -38,6 +38,11 @@ EXAMPLE
     shell$ openfido install weather
     shell$ openfido run weather year=2020 position=37.4,-122.3 /dev/null /tmp/weather.csv,/dev/null
 
+SEE ALSO
+--------
+
+* http://openfido.gridlabd.us/weather.html
+
 """
 
 try:
