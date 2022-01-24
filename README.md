@@ -7,6 +7,20 @@ If only the *CSVFILE* is specified, then the CSV output includes a header row.
 If the *GLMFILE* is also specified, then the CSV output does not include a
 header row and the column names are identified in the GLM weather object.
 
+PIPELINE
+--------
+
+Recommended pipeline settings:
+
+| Setting                 | Recommended value                        |
+| ----------------------- | ---------------------------------------- |
+| Pipeline name           | Weather                                  |
+| Description             | NSRDB historical weather data downloader |
+| DockerHub Repository    | debian:11                                |
+| Git Clone URL (https)   | https://github.com/openfido/weather.     |
+| Repository Branch       | main                                     |
+| Entrypoint Script (.sh) | openfido.sh                              |
+
 INPUTS
 ------
 
@@ -18,23 +32,44 @@ OUTPUTS
 *CSVFILE* - Must be specified in `config.csv`. The following columns are
  provided:
 
-    datetime
-    solar_global[W/sf]
-    solar_horizontal[W/sf]
-    solar_direct[W/sf]
-    clouds
-    dewpoint[degF]
-    temperature[degF]
-    ground_reflectivity[pu]
-    wind_speed[m/s]
-    wind_dir[rad]
-    solar_altitude[deg]
-    humidity[%]
-    pressure[mbar]
-    heat_index[degF]
+| Column name             | Description                                               |
+| ----------------------- | --------------------------------------------------------- |
+| datetime                | `YYYY-MM-DD HH:MM:SS` if CSV only, seconds in epoch w/GLM |
+| solar_global[W/sf]      | Global solar irradiance                                   |
+| solar_horizontal[W/sf]  | Horizontal surface solar irradiance                       |
+| solar_direct[W/sf]      | Direct normal solar irradiance                            |
+| clouds                  | Cloud type from NOAA PATMOS-X (see below)                 |
+| dewpoint[degF]          | Wet bulb temperature                                      |
+| temperature[degF]       | Dry bulb temperature                                      |
+| ground_reflectivity[pu] | Ground albedo                                             |
+| wind_speed[m/s]         | Wind speed                                                |
+| wind_dir[rad]           | Wind direction (compass heading in radians                |
+| solar_altitude[deg]     | Solar altitude.                                           |
+| humidity[%]             | Relative humidity                                         |
+| pressure[mbar]          | Air pressure                                              |
+| heat_index[degF]        | Heat index temperature (NOAA method)                      |
+
+| Cloud type | Definition.        |
+| ---------- | ------------------ |
+| 0          | Clear              |
+| 1          | Probably clear     |
+| 2          | Fog                |
+| 3          | Water              |
+| 4          | Super-cooled water |
+| 5          | Mixed              |
+| 6          | Opaque ice         |
+| 7          | Cirrus             |
+| 8          | Overlapping        |
+| 9          | Overshooting       |
+| 10         | Unknown            |
+| 11         | Dust               |
+| 12         | Smoke              |
+| -15        | Not available      |
 
 *GLMFILE* - Only if specified in `config.csv`. The model file includes the
- global "WEATHER", which enumerates the weather object name included.
+ global "WEATHER", which enumerates the weather object name included. The
+ model will always include the class definition for a weather object with
+ the weather properties defined above.
 
 CONFIGURATION
 -------------
@@ -73,3 +108,5 @@ See EMAIL for details.
 are permitted by adding additional columns
 
 *LATLON* - Specifies the latitude and longitude for the weather data.
+
+You may use the http://openfido.gridlabd.us/weather to generate the configuration file.
