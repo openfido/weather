@@ -224,6 +224,22 @@
 
 <SCRIPT TYPE="text/javascript">
 
+var nsrdb_columns = 
+{
+        'ghi' : 'solar_global[W/sf]',
+        'dhi' : 'solar_horizontal[W/sf]',
+        'dni' : 'solar_direct[W/sf]',
+        'cloud_type' : 'clouds',
+        'dew_point' : 'dewpoint[degF]',
+        'air_temperature' : 'temperature[degF]',
+        'surface_albedo' : 'ground_reflectivity[pu]',
+        'wind_speed' : 'wind_speed[m/s]',
+        'wind_direction' : 'wind_dir[rad]',
+        'solar_zenith_angle' : 'solar_altitude[deg]',
+        'relative_humidity' : 'humidity[%]',
+        'surface_pressure' : 'pressure[mbar]',
+}
+
 function cursor_busy()
 {
     document.body.style.cursor ='wait';
@@ -289,21 +305,21 @@ function preview_glm()
 
     NL = '\n'
     text = 'class weather' + NL +
-        '{' + NL +
-        '    double solar_global[W/sf];' + NL +
-        '    double solar_horizontal[W/sf];' + NL +
-        '    double solar_direct[W/sf];' + NL +
-        '    enumeration {CLEAR=0,PROBABLY_CLEAR=1, FOG=2, WATER=3, SUPERCOOLED_WATER=4, MIXED=5, OPAQUE_ICE=6, CIRRUS=7, OVERLAPPING=8, OVERSHOOTING=9, UNKNOWN=10, DUST=11, SMOKE=12, NA=15} clouds;' + NL +
-        '    double dewpoint[degF];' + NL +
-        '    double temperature[degF];' + NL +
-        '    double ground_reflectivity[pu];' + NL +
-        '    double wind_speed[m/s];' + NL +
-        '    double wind_dir[rad];' + NL +
-        '    double solar_altitude[deg];' + NL +
-        '    double humidity[%];' + NL +
-        '    double pressure[mbar];' + NL +
-        '    double heat_index[degF];' + NL +
-        '}' + NL +
+        '{' + NL;
+    field_list = fields.split(',')
+    text += '// field_list = ' + field_list + NL;
+    properties = [];
+    for ( var key in nsrdb_columns )
+    {
+        var value = nsrdb_columns[key];
+        text += '    double ' + value + '; // NSRDB column: ' + key + NL;
+        if ( field_list.includes(value) )
+        {
+            properties.push(key);
+        }
+    }
+    text += '// properties = ' + properties + NL;
+    text += '}' + NL +
         'module tape;' + NL +
         '#ifdef WEATHER' + NL +
         '#set WEATHER=$WEATHER ' + name + NL +
@@ -318,7 +334,7 @@ function preview_glm()
         '    object player' + NL +
         '    {' + NL +
         '        file "' + filename + '";' + NL +
-        '        property "' + fields + '";' + NL +
+        '        property "' + properties + '";' + NL +
         '    };' + NL +
         '}' + NL
 
