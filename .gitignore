@@ -1,3 +1,4 @@
 *.pyc
 openfido.log
 test_*/
+.DS_Store
