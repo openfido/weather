@@ -148,11 +148,12 @@ email = None # by default this will be the first key in the credentials file
 interpolate_time = None
 interpolate_method = 'linear'
 server = "https://developer.nrel.gov/api/solar/nsrdb_psm3_download.csv"
-cachedir = "/usr/local/share/openfido/weather"
+cachedir = "/tmp/weather"
 geocode_precision = 5 
 float_format="%.1f"
 date_format="%Y-%m-%d %H:%M:%S"
 verbose_enable = False
+credential_file = "/tmp/weather/credentials.json"
 
 try:
     from openfido_weather_config import *
