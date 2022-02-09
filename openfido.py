@@ -74,7 +74,7 @@ try:
     weather.addkey(APIKEY)
     outputs = [CSVFILE,GLMFILE]
 
-    weather.main([],outputs,{"year":year,"position":position,"name":name})
+    weather.main([],outputs,{"year":YEARS,"position":LATLON,"name":NAME})
 
     for file in outputs:
         if file and file != "/dev/null":
