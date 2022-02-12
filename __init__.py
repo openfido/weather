@@ -153,7 +153,7 @@ geocode_precision = 5
 float_format="%.1f"
 date_format="%Y-%m-%d %H:%M:%S"
 verbose_enable = False
-credential_file = "/tmp/credentials.json"
+credential_file = f"{OPENFIDO_INPUT}credentials.json"
 
 try:
     from openfido_weather_config import *
