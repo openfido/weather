@@ -1,4 +1,4 @@
-[![validation](https://github.com/openfido/weather/actions/workflows/main.yml/badge.svg)](https://github.com/openfido/weather/actions/workflows/main.yml)
+Pipeline status: [![validation](https://github.com/openfido/weather/actions/workflows/main.yml/badge.svg)](https://github.com/openfido/weather/actions/workflows/main.yml)
 
 OpenFIDO weather pipeline
 =========================
