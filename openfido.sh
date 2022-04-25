@@ -16,9 +16,9 @@ set -x # print commands
 set -e # exit on error
 set -u # nounset enabled
 
-export DEBIAN_FRONTEND=noninteractive
-apt-get -q -y update > /dev/null
-apt-get -q -y install python3 python3-pip > /dev/null
-python3 -m pip install -q -r requirements.txt > /dev/null
+LATITUDE=$(grep '^LATITUDE,' ${OPENFIDO_INPUT}/config.csv | cut -f2 -d,)
+LONGITUDE=$(grep '^LONGITUDE,' ${OPENFIDO_INPUT}/config.csv | cut -f2 -d,)
+BASENAME=$(grep '^BASENAME,' ${OPENFIDO_INPUT}/config.csv | cut -f2 -d,)
 
-python3 openfido.py || on_error
+cd ${OPENFIDO_OUTPUT}
+/usr/local/bin/gridlabd noaa_forecast -p="${LATITUDE},${LONGITUDE}" -c=${BASENAME}.csv -g=${BASENAME}.glm -n=${BASENAME}
