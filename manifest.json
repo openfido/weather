@@ -1,5 +1,5 @@
 {
-  "description" : "Weather download",
+  "description" : "Weather data download",
   "docker" : "slacgismo/gridlabd:latest",
   "git" : "https://github.com/openfido/weather.git",
   "branch" : "main",
