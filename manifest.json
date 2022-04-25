@@ -7,7 +7,7 @@
   "manual" : {
     "config" : "csv"
   },
-  "gridlabd" : {
+  "config" : {
     "LATITUDE" : {
       "description" : "Latitude of weather station",
       "prompt" : "Latitude",
