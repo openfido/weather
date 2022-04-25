@@ -11,13 +11,13 @@
     "LATITUDE" : {
       "description" : "Latitude of weather station",
       "prompt" : "Latitude",
-      "input_type" : "float",
+      "input_type" : "str",
       "default" : "37.5"
     },
     "LONGITUDE" : {
       "description" : "Longitude of weather station",
       "prompt" : "Longitude",
-      "input_type" : "float",
+      "input_type" : "str",
       "default" : "-122.2"
     },
     "BASENAME" : {
