@@ -25,6 +25,6 @@
       "prompt" : "Name",
       "input_type" : "str",
       "default" : "forecast"
-    },
+    }
   }
 }
