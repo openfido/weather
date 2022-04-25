@@ -110,3 +110,5 @@ See EMAIL for details.
 are permitted by adding additional columns
 
 *LATLON* - Specifies the latitude and longitude for the weather data.
+
+You may use the http://openfido.gridlabd.us/weather.html to generate the configuration file.

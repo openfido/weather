@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+
+<STYLE>
+
+    TABLE.SETTINGS
+    {
+        border-radius : 5px;
+        border : solid darkgrey 1px;
+    }
+
+    TH 
+    {
+        text-align : left;
+    }
+
+    TH.HEADING 
+    {
+        padding : 10px;
+        text-align : center;
+        background-color: lightgrey;
+        border-radius : 5px;
+        border : solid darkgrey 1px;
+    }
+
+    TD.REMARKS
+    {
+        font-style:  italic;
+    }
+
+    INPUT
+    {
+        font-family : Courier;
+    }
+
+    SELECT
+    {
+        font-family : Courier;
+    }
+
+    BUTTON
+    {
+        background-color: lightgreen;
+        padding : 10px;
+        font-size : 14px;
+        border-radius : 5px;
+        border : solid darkgrey 1px;
+    }
+
+    BUTTON:HOVER
+    {
+        background-color: lightyellow;
+    }
+
+    BUTTON:ACTIVE
+    {
+        background-color: green;
+    }
+
+</STYLE>
+
+<HTML LANG="en">
+
+<HEAD>
+
+    <TITLE>OpenFIDO Weather</TITLE>
+
+    <LINK REL="stylesheet" HREF="openfido.css" />
+
+</HEAD>
+
+<BODY>
+
+<FORM>
+
+<TABLE CLASS=SETTINGS CELLSPACING=5 CELLPADDING=5 WIDTH="750" ALIGN="center" BGCOLOR="lightblue">
+
+<TR>
+    <TD COLSPAN=3>
+
+        The <A HREF="https://github.com/openfido/weather">OpenFIDO Weather pipeline</A> requires a <CODE>config.csv</CODE> to process your query.
+        
+        <P/>
+
+        This page allows you to prepare the <A HREF="https://nsrdb.nrel.gov/">NSRB weather data query</A>, preview the results, and download the configuration file needed for OpenFIDO to generate the data.
+
+    </TD>
+</TR>
+
+<TR>
+    <TH COLSPAN=3 CLASS=HEADING>Data query</TH>
+</TR>
+
+<TR>
+    <TH VALIGN="top">Years</TH>
+    <!--TD><INPUT ID="years" TYPE="text" VALUE="2020" /></TD-->
+    <TD><SELECT ID="years" MULTIPLE STYLE="width: 300px">
+        <SCRIPT TYPE="text/javascript">
+            selected = "SELECTED"
+            for ( n = 2020 ; n > 1990 ; n-- )
+            {
+                document.writeln('<OPTION VALUE="' + n + '" ' + selected +'>' + n + '</OPTION>')
+                selected = ""
+            }
+        </SCRIPT>
+    </SELECT> 
+    </TD>
+    <TD CLASS=REMARKS>Select one or more years of weather data to download.</TD>
+</TR>
+
+<TR>
+    <TH VALIGN="top">Location</TH>
+    <TD><INPUT ID="latitude" TYPE="text" VALUE="37.5" />&deg; latitude (S &lt; 0 &lt; N)
+        <BR/>
+        <INPUT ID="longitude" TYPE="text" VALUE="-122.2" />&deg; longitude (W &lt; 0 &lt; E)
+    </TD>
+    <TD CLASS=REMARKS>Enter the latitude and longitude of the weather site. You may use <A HREF="https://www.google.com/maps/@37.5,-122.2z" TARGET="_blank">Google Maps</A> to identify a site.</TD>
+</TR>
+
+<TR>
+    <TH VALIGN="top">Fields</TH>
+    <!--TD><INPUT ID="fields" TYPE="text" VALUE="ghi,dhi,dni,cloud_type,dew_point,air_temperature,surface_albedo,wind_speed,wind_direction,solar_zenith_angle,relative_humidity,surface_pressure" /></TD-->
+    <TD><SELECT ID="fields" MULTIPLE SIZE=7>
+        <OPTGROUP LABEL="Temperature/Humidity">
+            <OPTION VALUE="air_temperature" SELECTED>Dry bulb temperature (&deg;F)</OPTION>
+            <OPTION VALUE="dew_point" SELECTED>Wet bulb point (&deg;F)</OPTION>
+            <OPTION VALUE="relative_humidity" SELECTED>Relative humidity (%)</OPTION>
+        </OPTGROUP>
+        <OPTGROUP LABEL="Wind/Pressure">
+            <OPTION VALUE="wind_speed" SELECTED>Wind speed (m/s)</OPTION>
+            <OPTION VALUE="wind_direction" SELECTED>Wind direction (radians)</OPTION>
+            <OPTION VALUE="surface_pressure" SELECTED>Air pressure (mbar)</OPTION>
+        </OPTGROUP>
+        <OPTGROUP LABEL="Solar/Clouds">
+            <OPTION VALUE="cloud_type" SELECTED>Cloud type</OPTION>
+            <OPTION VALUE="ghi" SELECTED>Global horizontal irradiance (W/m^2)</OPTION>
+            <OPTION VALUE="dhi" SELECTED>Direct horizontal irradiance (W/m^2)</OPTION>
+            <OPTION VALUE="dni" SELECTED>Direct normal irradiance (W/m^2)</OPTION>
+            <OPTION VALUE="solar_zenith_angle" SELECTED>Solar zenith angle (deg)</OPTION>
+            <OPTION VALUE="surface_albedo" SELECTED>Surface albedo (pu)</OPTION>
+        </OPTGROUP>
+    </SELECT></TD>
+    <TD CLASS=REMARKS>Choose one or more weather data fields to download.</TD>
+</TR>
+
+<TR>
+    <TD ALIGN="center" COLSPAN=3>
+        <BUTTON TYPE="submit" ONCLICK="preview_csv()">Preview weather data</BUTTON>
+        <BUTTON TYPE="submit" ONCLICK="preview_glm()">Preview GridLAB-D model</BUTTON>
+</TR>
+
+<TR>
+    <TH COLSPAN=3 CLASS=HEADING>Downloads</TH>
+</TR>
+
+<TR>
+    <TH>Weather file</TH>
+    <TD><INPUT ID="filename" TYPE="text" VALUE="weather.csv" /></TD>
+    <TD CLASS=REMARKS>Specify the name of the weather file.</TD>
+</TR>
+
+<TR>
+    <TH>GridLAB-D model</TH>
+    <TD><INPUT ID="withglm" TYPE="checkbox" CHECKED /></TD>
+    <TD CLASS=REMARKS>Specify whether to generate data for GridLAB-D.</TD>
+</TR>
+
+<TR>
+    <TH>GridLAB-D file</TH>
+    <TD><INPUT ID="modelname" TYPE="text" VALUE="weather.glm" /></TD>
+    <TD CLASS=REMARKS>Specify the name of the GridLAB-D model file.</TD>
+</TR>
+
+<TR>
+    <TH>Object name</TH>
+    <TD><INPUT ID="name" TYPE="text" VALUE="weather" /></TD>
+    <TD CLASS=REMARKS>Specify the GridLAB-D model object name for the weather data.</TD>
+</TR>
+
+<TR>
+     <TD ALIGN="center" COLSPAN=3>
+        <BUTTON TYPE="submit" ONCLICK="download_config()">Download config.csv</BUTTON>
+    </TD>
+</TR>
+
+<TR>
+    <TH COLSPAN=3 CLASS=HEADING>Credentials</TH>
+</TR>
+
+<TR>
+    <TH>Your email</TH>
+    <TD><INPUT ID="email" TYPE="text" VALUE="" /></TD>
+    <TD CLASS=REMARKS>You must provide the email address used to register with <A HREF="https://nsrdb.nrel.gov">NREL NSRDB website</A>.</TD>
+</TR>
+
+<TR>
+    <TH>Your API key</TH>
+    <TD><INPUT ID="apikey" TYPE="password" VALUE="" /></TD>
+    <TD CLASS=REMARKS>You must provide the API key your received from <A HREF="https://developer.nrel.gov/signup/" TARGET="_blank">NSRDB registration webpage</A>.</TD>
+</TR>
+
+<TR>
+     <TD ALIGN="center" COLSPAN=3>
+        <BUTTON TYPE="submit" ONCLICK="save_credentials()">Save</BUTTON>
+        <BUTTON TYPE="submit" ONCLICK="clear_credentials()">Clear</BUTTON>
+    </TD>
+</TR>
+
+</TABLE>
+
+<TABLE CELLSPACING=5 CELLPADDING=5 WIDTH="750" ALIGN="center">
+
+<TR>
+    <TD COLSPAN=2 ALIGN="center"><INPUT TYPE="reset" VALUE="Reset inputs" /></TD>
+</TR>
+
+<TR>
+    <TD COLSPAN=2>
+        <HR/>
+        <CITE ID="copyright"></CITE>
+        <HR/>
+    </TD>
+</TR>
+
+</TABLE>
+</FORM>
+
+<SCRIPT TYPE="text/javascript">
+
+var nsrdb_columns = 
+{
+        'ghi' : 'solar_global[W/sf]',
+        'dhi' : 'solar_horizontal[W/sf]',
+        'dni' : 'solar_direct[W/sf]',
+        'cloud_type' : 'clouds',
+        'dew_point' : 'dewpoint[degF]',
+        'air_temperature' : 'temperature[degF]',
+        'surface_albedo' : 'ground_reflectivity[pu]',
+        'wind_speed' : 'wind_speed[m/s]',
+        'wind_direction' : 'wind_dir[rad]',
+        'solar_zenith_angle' : 'solar_altitude[deg]',
+        'relative_humidity' : 'humidity[%]',
+        'surface_pressure' : 'pressure[mbar]',
+}
+
+function cursor_busy()
+{
+    document.body.style.cursor ='wait';
+}
+
+function cursor_ready()
+{
+    document.body.style.cursor ='default';
+}
+
+function get_selected(item)
+{
+    selected = [];
+    for ( option of document.getElementById(item).options )
+    {
+        if ( option.selected )
+        {
+            selected.push(option.value)
+        }
+    }
+    return selected.sort().join(",")
+}
+
+function preview_csv()
+{
+    cursor_busy()
+
+    longitude = document.getElementById('longitude').value
+    latitude = document.getElementById('latitude').value
+    years = get_selected('years')
+    apikey = document.getElementById('apikey').value
+    email = document.getElementById('email').value
+    fields = get_selected('fields')
+    filename = document.getElementById('filename').value
+    modelname = document.getElementById('modelname').value
+    name = document.getElementById('name').value
+
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent('https://developer.nrel.gov/api/solar/nsrdb_psm3_download.csv?wkt=POINT(' + longitude + '%20' + latitude + ')&names=' + years + '&leap_day=true&interval=60&utc=false&api_key=' + apikey + '&attributes=' + fields + '&email=' + email + '&full_name=None&affiliation=None&mailing_list=false&reason=None'));
+    element.setAttribute('download', filename);
+    element.setAttribute('target','_blank')
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+
+    cursor_ready()
+}
+
+function preview_glm()
+{
+    cursor_busy()
+
+    longitude = document.getElementById('longitude').value
+    latitude = document.getElementById('latitude').value
+    years = get_selected("years")
+    apikey = document.getElementById('apikey').value
+    email = document.getElementById('email').value
+    fields = get_selected('fields')
+    filename = document.getElementById('filename').value
+    modelname = document.getElementById('modelname').value
+    name = document.getElementById('name').value
+
+    NL = '\n'
+    text = 'class weather' + NL +
+        '{' + NL;
+    field_list = fields.split(',')
+    text += '// field_list = ' + field_list + NL;
+    properties = [];
+    for ( var key in nsrdb_columns )
+    {
+        var value = nsrdb_columns[key];
+        text += '    double ' + value + '; // NSRDB column: ' + key + NL;
+        if ( field_list.includes(value) )
+        {
+            properties.push(key);
+        }
+    }
+    text += '// properties = ' + properties + NL;
+    text += '}' + NL +
+        'module tape;' + NL +
+        '#ifdef WEATHER' + NL +
+        '#set WEATHER=$WEATHER ' + name + NL +
+        '#else' + NL +
+        '#define WEATHER=' + name + NL +
+        '#endif' + NL +
+        'object weather' + NL +
+        '{' + NL +
+        '    name "' + name + '";' + NL +
+        '    latitude ' + latitude + ';' + NL +
+        '    longitude ' + longitude + ';' + NL +
+        '    object player' + NL +
+        '    {' + NL +
+        '        file "' + filename + '";' + NL +
+        '        property "' + properties + '";' + NL +
+        '    };' + NL +
+        '}' + NL
+
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', modelname);
+    element.setAttribute('target','_blank')
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+
+    cursor_ready()
+}
+
+function download_config()
+{
+    cursor_busy()
+
+    longitude = document.getElementById('longitude').value
+    latitude = document.getElementById('latitude').value
+    years = get_selected('years')
+    apikey = document.getElementById('apikey').value
+    email = document.getElementById('email').value
+    fields = get_selected('fields')
+    filename = document.getElementById('filename').value
+
+    NL = '\n'
+    text = 'CSVFILE,weather.csv' + NL +
+        'GLMFILE,weather.glm' + NL +
+        'NAME,weather' + NL +
+        'EMAIL,' + email + NL +
+        'APIKEY,' + apikey + NL +
+        'YEARS,' + years + NL +
+        'LATLON,' + latitude + ',' + longitude + NL;
+    //    'FIELDS,' + fields + NL
+
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', 'config.csv');
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+
+    cursor_ready()
+}
+
+// set copyright
+today = new Date();
+year = (today.getYear()+1900)
+if ( year > 2022 )
+{
+    years = "2022-" + year
+}
+else
+{
+    years = "2022"
+}
+document.getElementById("copyright").innerHTML = "Copyright &copy; " + years + ", Regents of the Leland Stanford Junior University"
+
+</SCRIPT>
+
+</BODY>
+</HTML>

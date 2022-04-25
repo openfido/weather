@@ -38,27 +38,54 @@ EXAMPLE
     shell$ openfido install weather
     shell$ openfido run weather year=2020 position=37.4,-122.3 /dev/null /tmp/weather.csv,/dev/null
 
+SEE ALSO
+--------
+
+* http://openfido.gridlabd.us/weather.html
+
 """
+
+CONFIG = {
+    "csvfile" : '',
+    "glmfile" : '',
+    "name" : '',
+    "credentials" : '',
+    "years" : [],
+    "position" : [],
+}
 
 try:
 
     import os, sys, shutil, json, csv
 
     OPENFIDO_INPUT = os.getenv("OPENFIDO_INPUT")
+    if not OPENFIDO_INPUT:
+        raise Exception("OPENFIDO_INPUT not specified in environment")
+    elif not OPENFIDO_INPUT.endswith("/"):
+        OPENFIDO_INPUT += "/"
+
     OPENFIDO_OUTPUT = os.getenv("OPENFIDO_OUTPUT")
+    if not OPENFIDO_OUTPUT:
+        raise Exception("OPENFIDO_OUTPUT not specified in environment")
+    elif not OPENFIDO_OUTPUT.endswith("/"):
+        OPENFIDO_OUTPUT += "/"
 
     GLMFILE = "/dev/null"
     NAME = None
 
-    with open(f"{OPENFIDO_INPUT}/config.csv","r") as f:
+    with open(f"{OPENFIDO_INPUT}config.csv","r") as f:
         reader = csv.reader(f)
-        for line in reader:
-            if len(line) == 1:
-                globals()[line[0]] = True
-            elif len(line) == 2:
-                globals()[line[0]] = line[1]
-            elif len(line) > 2:
-                globals()[line[0]] = line[1:]
+        for args in reader:
+            name,value = args.split(",")
+            if not name in CONFIG.keys():
+                raise Exception(f"config parameter '{value[0]}' is not valid")
+            vtype = type(CONFIG[name])
+            if vtype is bool:
+                CONFIG[name] = True
+            elif vtype is list:
+                CONFIG[name] = value[1:]
+            else:
+                CONFIG[name] = vtype(value[1])
 
     os.chdir("/tmp")
 
@@ -69,7 +96,7 @@ try:
     weather.addkey(APIKEY)
     outputs = [CSVFILE,GLMFILE]
 
-    weather.main([],outputs,{"year":year,"position":position,"name":name})
+    weather.main([],outputs,{"year":YEARS,"position":LATLON,"name":NAME})
 
     for file in outputs:
         if file and file != "/dev/null":

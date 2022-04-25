@@ -1,7 +1,30 @@
 {
-  "description" : "Weather download pipeline",
-  "docker" : "debian:11",
+  "description" : "Weather data download",
+  "docker" : "slacgismo/gridlabd:latest",
   "git" : "https://github.com/openfido/weather.git",
   "branch" : "main",
-  "script" : "openfido.sh"
+  "script" : "openfido.sh",
+  "manual" : {
+    "config" : "csv"
+  },
+  "config" : {
+    "LATITUDE" : {
+      "description" : "Latitude of weather station",
+      "prompt" : "Latitude",
+      "input_type" : "str",
+      "default" : "37.5"
+    },
+    "LONGITUDE" : {
+      "description" : "Longitude of weather station",
+      "prompt" : "Longitude",
+      "input_type" : "str",
+      "default" : "-122.2"
+    },
+    "BASENAME" : {
+      "description" : "Name for weather data",
+      "prompt" : "Name",
+      "input_type" : "str",
+      "default" : "forecast"
+    }
+  }
 }
