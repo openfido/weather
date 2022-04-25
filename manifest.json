@@ -18,7 +18,7 @@
       "description" : "Longitude of weather station",
       "prompt" : "Longitude",
       "input_type" : "str",
-      "default" : "-122.2"
+      "default" : "-122.3"
     },
     "BASENAME" : {
       "description" : "Name for weather data",
