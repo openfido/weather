@@ -18,15 +18,15 @@ run_test()
     cd $1
     shift 1
     if ! openfido run weather $* 1>openfido.out 2>openfido.err; then
+        echo "ERROR: $(basename $PWD) test failed (exit code $?)" > $OUTPUT
         FAILED=$(($FAILED+1))
-        echo "ERROR: $(basename $PWD) test failed" > $OUTPUT
     fi
     cd - > /dev/null
 }
 
 check_file()
 {
-    diff $1/$2 $2 1>>$1/openfido.out 2>>$1/openfido.err|| (echo "ERROR: $1 check of $2 failed" > $OUTPUT)
+    diff $1/$2 $2 1>>$1/openfido.out 2>>$1/openfido.err || (echo "ERROR: $1 check of $2 failed (outputs differ)" > $OUTPUT)
 }
 
 # test simple weather query

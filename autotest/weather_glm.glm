@@ -3,7 +3,7 @@ class weather
 	double solar_global[W/sf];
 	double solar_horizontal[W/sf];
 	double solar_direct[W/sf];
-	enumeration {CLEAR=0,PROBABLY_CLEAR=1, FOG=2, WATER=3, SUPERCOOLED_WATER=4, MIXED=5, OPAQUE_ICE=6, CIRRUS=7, OVERLAPPING=8, OVERSHOOTING=9, UNKNOWN=10, DUST=11, SMOKE=12, NA=15} clouds;
+	double clouds;
 	double dewpoint[degF];
 	double temperature[degF];
 	double ground_reflectivity[pu];
@@ -16,13 +16,13 @@ class weather
 }
 module tape;
 #ifdef WEATHER
-#set WEATHER=$WEATHER weather@9q9hb
+#set WEATHER=$WEATHER weather@9q9hbf
 #else
-#define WEATHER=weather@9q9hb
+#define WEATHER=weather@9q9hbf
 #endif
 object weather
 {
-	name "weather@9q9hb";
+	name "weather@9q9hbf";
 	latitude 37.41;
 	longitude -122.3;
 	object player
