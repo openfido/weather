@@ -1,4 +1,5 @@
 #!/bin/bash
+
 cd autotest
 
 OUTPUT=/dev/stdout

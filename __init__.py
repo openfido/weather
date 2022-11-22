@@ -153,7 +153,10 @@ geocode_precision = 5
 float_format="%.1f"
 date_format="%Y-%m-%d %H:%M:%S"
 verbose_enable = False
-credential_file = f"{OPENFIDO_INPUT}credentials.json"
+if "OPENFIDO_INPUT" in globals() and os.path.exists(f"{OPENFIDO_INPUT}credentials.json"):
+    credential_file = f"{OPENFIDO_INPUT}credentials.json"
+else:
+    credential_file = f"{os.getenv('HOME')}/.nsrdb/credentials.json"
 
 try:
     from openfido_weather_config import *

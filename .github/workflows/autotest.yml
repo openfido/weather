@@ -25,6 +25,8 @@ jobs:
         run: |
           curl -sL https://raw.githubusercontent.com/openfido/cli/main/install.sh | bash
           openfido install weather
+          mkdir -p $HOME/.nsrdb
+          echo '{"'$NSRDB_SIGNUP'": "'$NSRDB_APIKEY'"}' > $HOME/.nsrdb/credentials.json
           sh autotest.sh
         
       - name: artifacts
