@@ -5,3 +5,4 @@ test_*/
 .DS_Store
 autotest-errors.tar.gz
 autotest/output_*
+autotest/input_*/credentials.json
