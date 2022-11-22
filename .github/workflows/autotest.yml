@@ -24,6 +24,7 @@ jobs:
       - name: validate
         run: |
           curl -sL https://raw.githubusercontent.com/openfido/cli/main/install.sh | bash
+          openfido install weather
           sh autotest.sh
         
       - name: artifacts
