@@ -1,4 +1,4 @@
-name: validation
+name: validate
 
 on:
 
@@ -16,6 +16,7 @@ jobs:
   
     runs-on: ubuntu-latest
     container: slacgismo/gridlabd:latest
+    environment: validate
     
     steps:
     
@@ -24,7 +25,7 @@ jobs:
       - name: validate
         run: |
           mkdir -p $HOME/.nsrdb
-          echo '{"'$NSRDB_SIGNUP'": "'$NSRDB_APIKEY'"}' > $HOME/.nsrdb/credentials.json
+          echo '{"'${{ secrets.NSRDB_SIGNUP }}'": "'${{ secrets.NSRDB_APIKEY }}'"}' > $HOME/.nsrdb/credentials.json
           bash autotest.sh
         
       - name: artifacts
