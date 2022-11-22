@@ -25,7 +25,7 @@ jobs:
         run: |
           mkdir -p $HOME/.nsrdb
           echo '{"'$NSRDB_SIGNUP'": "'$NSRDB_APIKEY'"}' > $HOME/.nsrdb/credentials.json
-          sh autotest.sh
+          bash autotest.sh
         
       - name: artifacts
         uses: actions/upload-artifact@v2

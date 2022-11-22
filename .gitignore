@@ -3,3 +3,5 @@ __pycache__
 openfido.log
 test_*/
 .DS_Store
+autotest-errors.tar.gz
+autotest/output_*
