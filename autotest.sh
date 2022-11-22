@@ -46,6 +46,8 @@ FAILED=0
 # check_file test_weather_name weather_name.csv
 # check_file test_weather_name weather_name.glm
 
+export TZ=UTC
+
 for DIR in autotest/input_*; do
     echo -n "Processing $(basename DIR)..."
     export OPENFIDO_INPUT=$DIR
