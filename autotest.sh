@@ -51,7 +51,7 @@ export TZ=UTC
 for DIR in autotest/input_*; do
     echo -n "Processing $(basename DIR)..."
     export OPENFIDO_INPUT=$DIR
-    cp $HOME/.nsrdb/credentials.json $OPENFIDO_INPUT
+    # cp $HOME/.nsrdb/credentials.json $OPENFIDO_INPUT
     export OPENFIDO_OUTPUT=${DIR/\/input_/\/output_}
     mkdir -p $OPENFIDO_OUTPUT
     if ! sh openfido.sh 1>$OPENFIDO_OUTPUT/openfido.out 2>$OPENFIDO_OUTPUT/openfido.err; then
