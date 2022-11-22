@@ -27,7 +27,7 @@ run_test()
 
 check_file()
 {
-    if ! diff $1/$2 $2 1>>$1/openfido.out 2>>$1/openfido.err; then
+    if -f $1/$2 -a ! diff $1/$2 $2 1>>$1/openfido.out 2>>$1/openfido.err; then
         echo "ERROR: $1 check of $2 failed (outputs differ)" > $OUTPUT
         FAILED=$(($FAILED+1))
     fi
