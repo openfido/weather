@@ -18,7 +18,7 @@ run_test()
     mkdir -p $1
     cd $1
     shift 1
-    if ! openfido run weather $* 1>openfido.out 2>openfido.err; then
+    if ! gridlabd nsrdb_weather $* 1>openfido.out 2>openfido.err; then
         echo "ERROR: $(basename $PWD) test failed (exit code $?)" > $OUTPUT
         FAILED=$(($FAILED+1))
     fi
@@ -34,16 +34,16 @@ check_file()
 }
 
 # test simple weather query
-run_test test_weather year=2020 position=37.4,-122.3 /dev/null weather.csv,/dev/null
+run_test test_weather --year=2020 --position=37.4,-122.3 --csv=weather.csv
 check_file test_weather weather.csv
 
 # test weather query with model
-run_test test_weather_glm year=2020 position=37.4,-122.3 /dev/null weather_glm.csv,weather_glm.glm
+run_test test_weather_glm --year=2020 --position=37.4,-122.3 --csv=weather_glm.csv --glm=weather_glm.glm
 check_file test_weather_glm weather_glm.csv
 check_file test_weather_glm weather_glm.glm
 
 # test weather query with named object
-run_test test_weather_name year=2020 position=37.4,-122.3 /dev/null weather_name.csv,weather_name.glm name=test
+run_test test_weather_name --year=2020 --position=37.4,-122.3 --csv=weather_name.csv --glm=weather_name.glm --name=test
 check_file test_weather_name weather_name.csv
 check_file test_weather_name weather_name.glm
 
