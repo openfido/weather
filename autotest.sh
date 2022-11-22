@@ -49,7 +49,7 @@ FAILED=0
 export TZ=UTC
 
 for DIR in autotest/input_*; do
-    echo -n "Processing $(basename DIR)..."
+    echo -n "Processing $(basename $DIR)..."
     export OPENFIDO_INPUT=$DIR
     # cp $HOME/.nsrdb/credentials.json $OPENFIDO_INPUT
     export OPENFIDO_OUTPUT=${DIR/\/input_/\/output_}
