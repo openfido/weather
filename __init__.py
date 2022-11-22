@@ -153,6 +153,7 @@ geocode_precision = 5
 float_format="%.1f"
 date_format="%Y-%m-%d %H:%M:%S"
 verbose_enable = False
+attributes = 'ghi,dhi,dni,cloud_type,dew_point,air_temperature,surface_albedo,wind_speed,wind_direction,solar_zenith_angle,relative_humidity,surface_pressure'
 if "OPENFIDO_INPUT" in globals() and os.path.exists(f"{OPENFIDO_INPUT}credentials.json"):
     credential_file = f"{OPENFIDO_INPUT}credentials.json"
 else:
