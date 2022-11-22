@@ -46,4 +46,8 @@ check_file test_weather_name weather_name.glm
 echo "$TESTED tests processed" >$OUTPUT
 echo "$FAILED tests failed" >$OUTPUT
 
+if [ $FAILED -gt 0 ]; then
+    tar cfz autotest-errors.tar.gz autotest
+fi
+
 exit $FAILED
