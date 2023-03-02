@@ -15,16 +15,18 @@ jobs:
   build:
   
     runs-on: ubuntu-latest
+    container: slacgismo/gridlabd:latest
+    environment: validate
     
     steps:
     
       - uses: actions/checkout@v2
       
-      - name: update
-        run: python3 -m pip install -r requirements.txt
-        
       - name: validate
-        run: . autotest.sh
+        run: |
+          mkdir -p $HOME/.nsrdb
+          echo '{"'${{ secrets.NSRDB_SIGNUP }}'": "'${{ secrets.NSRDB_APIKEY }}'"}' > $HOME/.nsrdb/credentials.json
+          bash autotest.sh
         
       - name: artifacts
         uses: actions/upload-artifact@v2
