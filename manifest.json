@@ -24,7 +24,12 @@
       "description" : "Name for weather data",
       "prompt" : "Name",
       "input_type" : "str",
-      "default" : "forecast"
+      "default" : "weather"
+    },
+    "YEAR" : {
+      "description" : "Weather year (none for forecast)",
+      "prompt" : "Weather year (optional)",
+      "input type" : "int"
     }
   }
 }
