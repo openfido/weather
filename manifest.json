@@ -1,6 +1,6 @@
 {
   "description" : "Weather data download",
-  "docker" : "slacgismo/gridlabd:latest",
+  "docker" : "lfenergy/arras:latest",
   "git" : "https://github.com/openfido/weather.git",
   "branch" : "main",
   "script" : "openfido.sh",
